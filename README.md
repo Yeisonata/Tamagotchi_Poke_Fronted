@@ -1,12 +1,15 @@
-# React + Vite
+# 🐾 Tamagotchi PokéAPI - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el frontend del proyecto **Tamagotchi Pokémon**, una aplicación web que simula un tamagotchi utilizando Pokémon reales obtenidos desde la PokéAPI. Puedes alimentar, entrenar, jugar y cuidar de tus Pokémon virtuales. Incluye funcionalidades para usuarios y administradores.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologías Usadas
 
-## Expanding the ESLint configuration
+- ⚛️ [React](https://reactjs.org/)
+- ⚡ [Vite](https://vitejs.dev/)
+- 💨 [Tailwind CSS](https://tailwindcss.com/)
+- 🔐 Autenticación con JWT
+- 🔀 React Router
+- 📡 Axios para conexión con el backend
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
