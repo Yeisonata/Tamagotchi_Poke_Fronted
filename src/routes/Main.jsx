@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import App from '../pages/App.jsx';
 import Register from '../pages/Register.jsx';
+import App from '../pages/App.jsx';
+import '../styles/App.css';
 // import UserDashboard from '../pages/UserDashboard.jsx'; 
 // import Login from '../pages/Login.jsx';
 // import CreatePokemon from '../pages/CreatePokemon.jsx';

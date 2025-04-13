@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import '../styles/Register.css';
+import '../styles/App.css';
 // import logo from '../assets/logo.png';
 import axios from 'axios';
 import cloud1 from '../assets/Cloud-1.png';

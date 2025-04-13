@@ -1,58 +1,101 @@
-import React, { useState } from 'react';
-import '../styles/App.css';
-import axios from 'axios';
-// import logo from '../assets/logo.png';
-import cloud1 from '../assets/Cloud-1.png';
-import cloud2 from '../assets/Cloud-2.png';
-import cloud3 from '../assets/Cloud-3.png';
+import React, { useState, useEffect, useRef } from "react";
+import "../styles/App.css";
+import axios from "axios";
 
-
+import cloud1 from "../assets/Cloud-1.png";
+import cloud2 from "../assets/Cloud-2.png";
+import cloud3 from "../assets/Cloud-3.png";
+import themeSong from "../assets/sonid/opening.mp3";
 const api = axios.create({
-  baseURL: '/auth', 
+  baseURL: "/auth",
 });
 
 function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // 🎵 Estados para música
+  const [isPlaying, setIsPlaying] = useState(true);
+  const audioRef = useRef(new Audio(themeSong));
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.loop = true;
+
+    const storedPref = localStorage.getItem("music");
+
+    if (storedPref === "off") {
+      setIsPlaying(false);
+      audio.pause();
+    } else {
+      setIsPlaying(true);
+      // ⚠️ No llames a audio.play() aquí directamente
+    }
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+      localStorage.setItem("music", "off");
+    } else {
+      audio
+        .play()
+        .catch((err) => console.warn("Error al reproducir audio:", err));
+      setIsPlaying(true);
+      localStorage.setItem("music", "on");
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/login', {
+      const response = await api.post("/login", {
         username,
         password,
       });
-
-      
-      localStorage.setItem('token', response.data.token);
-
-      
+      localStorage.setItem("token", response.data.token);
       const role = response.data.role;
-      if (role === 'ADMIN') {
-        window.location.href = '/admin/getAll';
-      } else if (role === 'USER') {
-        window.location.href = '/user-dashboard';
+      if (role === "ADMIN") {
+        window.location.href = "/admin/getAll";
+      } else if (role === "USER") {
+        window.location.href = "/user-dashboard";
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage('Error al iniciar sesión. Por favor, compruebe sus credenciales');
+      setErrorMessage(
+        "Error al iniciar sesión. Por favor, compruebe sus credenciales"
+      );
     }
   };
-  
+
   return (
     <div className="App">
-       <div className="background-clouds">
+      {/* ☁️ Fondo de nubes */}
+      <div className="background-clouds">
         <img src={cloud1} alt="Cloud 1" className="cloud cloud1" />
         <img src={cloud2} alt="Cloud 2" className="cloud cloud2" />
         <img src={cloud3} alt="Cloud 3" className="cloud cloud3" />
-        <img src={cloud2} alt="Cloud 4" className="cloud cloud4" /> 
+        <img src={cloud2} alt="Cloud 4" className="cloud cloud4" />
       </div>
+
+      {/* 📝 Contenedor principal */}
       <div className="login-container">
+        {/* 🔊 Botón de música dentro del contenedor */}
+        <button onClick={toggleMusic} className="music-toggle">
+          {isPlaying ? "🔊 " : "🔇 "}
+        </button>
+
+        {/* Formulario de inicio de sesión */}
         <form onSubmit={handleLogin}>
-          {/* <img src={logo} alt="Logo" className="logo" /> */}
           <div>
-          
             <label htmlFor="username">Usuario:</label>
             <input
               type="text"
@@ -75,15 +118,18 @@ function App() {
             />
           </div>
           {errorMessage && <p className="error">{errorMessage}</p>}
-          <button type="submit">Iniciar Session</button>
-
+          <button type="submit">Iniciar Sesión</button>
         </form>
+
         <p className="register-text">
-          ¿No tienes una cuenta? Regístrate {' '}
-          <a href="/register" className="register-link">aquí.</a> 
-          </p>
+          ¿No tienes una cuenta? Regístrate{" "}
+          <a href="/register" className="register-link">
+            aquí.
+          </a>
+        </p>
       </div>
     </div>
   );
 }
+
 export default App;
