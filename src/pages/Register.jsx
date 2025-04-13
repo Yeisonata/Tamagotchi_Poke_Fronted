@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Register.css';
-import logo from '../assets/logo.png';
+// import logo from '../assets/logo.png';
 import axios from 'axios';
 import cloud1 from '../assets/Cloud-1.png';
 import cloud2 from '../assets/Cloud-2.png';
@@ -67,9 +67,9 @@ function Register() {
 
       <div className="login-container">
         <form onSubmit={handleRegister}>
-          <img src={logo} alt="Logo" className="logo" />
+          {/* <img src={logo} alt="Logo" className="logo" /> */}
           <div>
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="username">Usuario:</label>
             <input
               type="text"
               id="username"
@@ -91,7 +91,7 @@ function Register() {
             />
           </div>
           <div>
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password">Contraseña:</label>
             <input
               type="password"
               id="password"
@@ -102,7 +102,7 @@ function Register() {
             />
           </div>
           {errorMessage && <p className="error">{errorMessage}</p>}
-          <button type="submit">Register</button>
+          <button type="submit">Registrar</button>
         </form>
         <p className="register-text">
           ¿Ya tienes una cuenta? Ingresa {' '}
