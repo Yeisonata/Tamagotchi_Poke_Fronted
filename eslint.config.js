@@ -19,6 +19,8 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      ecmaFeatures: { jsx: true },
+
     },
     rules: {
       ...js.configs.recommended.rules,

@@ -5,7 +5,7 @@ import '../styles/App.css';
 // import UserDashboard from '../pages/UserDashboard.jsx'; 
 // import Login from '../pages/Login.jsx';
 import CreatePokemon from '../pages/CreatePokemon.jsx';
-// import PokemonDetails from '../pages/PokemonDetails.jsx';
+import PokemonDetails from '../pages/PokemonDetails.jsx';
 // import PokemonList from '../pages/PokemonList.jsx';
 // import GetOne from '../pages/GetOne.jsx';
 // import AdminDashboard from '../pages/AdminDashboard.jsx';
@@ -18,9 +18,9 @@ function Main() {
         {/* <Route path="/admin/getAll" element={<AdminDashboard />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/pokenest/create" element={<CreatePokemon />} />
+        <Route path="/pokenest/pokedetails" element={<PokemonDetails />} />
         {/* <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/pokenest/pokedetails" element={<PokemonDetails />} />
         <Route path="/pokenest/getUserPoke" element={<PokemonList/>} />
         <Route path="/pokenest/getOne/:id" element={<GetOne />} /> */}
       </Routes>
