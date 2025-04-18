@@ -1,0 +1,124 @@
+.dashboardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../assets/background-3.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden; 
+  position: relative; 
+  z-index: 0; 
+}
+
+.background-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+}
+
+.cloud {
+  position: absolute;
+  width: 150px;
+  opacity: 0.8; 
+}
+
+.cloud1 {
+  animation: moveClouds 30s linear infinite;
+  animation-delay: 0s;
+  top: 10%; 
+  left: -200px; 
+}
+
+.cloud2 {
+  animation: moveClouds 30s linear infinite;
+  animation-delay: 4s;
+  top: 30%; 
+  left: -300px;
+}
+
+.cloud3 {
+  animation: moveClouds 40s linear infinite;
+  animation-delay: 2s;
+  top: 50%; 
+  left: -250px;
+}
+
+
+
+@keyframes moveClouds {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
+
+.menuscontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  width: 400px; 
+  max-width: 90%; 
+  padding: 30px; 
+  border-radius: 20px; 
+  border: 1px solid #555;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  text-align: center;
+}
+
+.menustitle {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #000000;
+  text-align: center; 
+}
+
+.menusoptions {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 15px; 
+  width: 70%; 
+}
+
+.menu-option {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  padding: 10px 20px;
+  background-color: #f7f7f7; 
+  border: 1px solid #ddd; 
+  border-radius: 10px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #8a8a8a;
+  width: 100%; 
+}
+
+.menu-option:hover {
+  background-color: #eaf4fc; 
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+}
+
+.menu-label {
+  flex-grow: 1; 
+  font-size: 1.2rem;
+  color: #000000;
+  text-align: left; 
+  white-space: nowrap; 
+}
