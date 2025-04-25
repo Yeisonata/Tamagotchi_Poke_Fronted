@@ -6,12 +6,14 @@ import cloud1 from "../assets/Cloud-1.png";
 import cloud2 from "../assets/Cloud-2.png";
 import cloud3 from "../assets/Cloud-3.png";
 import themeSong from "../assets/sonid/opening.mp3";
+
 const api = axios.create({
-  baseURL: "/auth",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/",
+  withCredentials: true,
 });
 
 function App() {
-  const [username, setUsername] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");  // Permitir usuario o email
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -56,11 +58,16 @@ function App() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+  
     try {
-      const response = await api.post("/login", {
-        username,
+      const loginField = usernameOrEmail.includes('@') ? 'email' : 'username';  // Verifica si contiene '@'
+      const loginData = {
+        [loginField]: usernameOrEmail,  // Usa 'email' o 'username' dinámicamente
         password,
-      });
+      };
+  
+      const response = await api.post("/auth/login", loginData);
+  
       localStorage.setItem("token", response.data.token);
       const role = response.data.role;
       if (role === "ADMIN") {
@@ -75,6 +82,10 @@ function App() {
       );
     }
   };
+  
+  
+  
+  
 
   return (
     <div className="App">
@@ -96,13 +107,13 @@ function App() {
         {/* Formulario de inicio de sesión */}
         <form onSubmit={handleLogin}>
           <div>
-            <label htmlFor="username">Usuario:</label>
+            <label htmlFor="usernameOrEmail">Usuario o Email:</label>
             <input
               type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="usernameOrEmail"
+              name="usernameOrEmail"
+              value={usernameOrEmail}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
               required
             />
           </div>

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Register.css';
 import '../styles/App.css';
 // import logo from '../assets/logo.png';
-import axios from 'axios';
+
+import api from '../axiosConfig';
 import cloud1 from '../assets/Cloud-1.png';
 import cloud2 from '../assets/Cloud-2.png';
 import cloud3 from '../assets/Cloud-3.png';
@@ -21,7 +22,7 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/auth/register', {
+      await api.post('/auth/register', {
         username,
         email,
         password,
