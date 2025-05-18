@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import pokeIcon from '../assets/poke.png';
 import heart from "../assets/emojis/heart.png";
 import sleep from "../assets/emojis/sleep.gif";
-
+import Logo from "../assets/pokelogo.png";
 import yummy from "../assets/emojis/yummy.png";
 
 import axios from 'axios';
@@ -230,14 +230,15 @@ export const sleepingImages = {
 
 
 const interactionMap = {
-    Alimentar: { action: "FEED", endpoint: "/pokenest/update" },
-    Dormir: { action: "SLEEP", endpoint: "/pokenest/update" },
-    Jugar: { action: "PLAY", endpoint: "/pokenest/update" },
-    Entrenar: { action: "TRAIN", endpoint: "/pokenest/update" },
-    Explorar: { action: "EXPLORE", endpoint: "/pokenest/update" },
-    Curar: { action: "HEAL", endpoint: "/pokenest/update" },
-    "Eliminar Pokémon": { action: null, endpoint: "/pokenest/delete" },
-};
+    Alimentar:  { action: "feed",   endpoint: "/pet/feed" },
+    Dormir:     { action: "sleep",  endpoint: "/pet/sleep" },
+    Jugar:      { action: "play",   endpoint: "/pet/play" },
+    Entrenar:   { action: "train",  endpoint: "/pet/train" },
+    Explorar:   { action: "explore",endpoint: "/pet/explore" },
+    Curar:      { action: "heal",   endpoint: "/pet/heal" },
+    "Eliminar Pokémon": { action: null, endpoint: "/pet/delete" }
+  };
+  
 
 
 const PokemonDetails = () => {
@@ -526,9 +527,9 @@ const PokemonDetails = () => {
         ))}
     </ul>
             </div>
-            <img src={{}} alt="Logo" className="logo-image" />
                 <div className="pokemon-details-content">
                 <div className="pokemon-alias-container">
+            <img src={{Logo}} alt="Logo" className="logo-image" />
                     <img src={pokeIcon} alt="Poke Icon" className="poke-icon" />
                     <span className="pokemon-alias">{currentPokemon.alias}</span>
                     <span className="separator">-</span>

@@ -37,7 +37,7 @@ const CreatePokemon = () => {
       
         if (response.data?.petId) {
           alert("Mascota creada con éxito 🐾");
-          // redirige o actualiza la UI
+              navigate("/user-dashboard");
         } else {
           alert("Error: el backend no devolvió un ID válido.");
         }

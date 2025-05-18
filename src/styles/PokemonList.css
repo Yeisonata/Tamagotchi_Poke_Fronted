@@ -1,5 +1,5 @@
 .pokemon-list-container {
-  background: url('../assets/background.jpg') no-repeat center center;
+  background: url('../assets/pokeMis.png') no-repeat center center;
   background-size: cover;
   width: 100vw;
   height: 100vh;
@@ -79,7 +79,7 @@
 }
 
 .pokemon-card {
-background: #eefcee;
+background: #C3FF98;
 border: 1px solid #e0e0e0;
 border-radius: 10px;
 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -207,7 +207,21 @@ color: #666;
 
 .progress-bar {
   height: 100%;
-  background-color: #4caf50; 
+  background-color: #E27696; 
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  transition: width 0.3s ease;
+}
+.progress-bar-xp {
+  height: 100%;
+  background-color: #4EDBEE; 
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  transition: width 0.3s ease;
+}
+.progress-bar-happiness{
+    height: 100%;
+  background-color:#4caf50; 
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   transition: width 0.3s ease;

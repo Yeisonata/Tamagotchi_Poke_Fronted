@@ -7,6 +7,8 @@ import cloud2 from "../assets/Cloud-2.png";
 import cloud3 from "../assets/Cloud-3.png";
 import themeSong from "../assets/sonid/opening.mp3";
 
+import logo from "../assets/pokelogo.png"; 
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/",
   withCredentials: true,
@@ -107,6 +109,7 @@ function App() {
         {/* Formulario de inicio de sesión */}
         <form onSubmit={handleLogin}>
           <div>
+            <img src={logo} alt="Logo" className="logo" />
             <label htmlFor="usernameOrEmail">Usuario o Email:</label>
             <input
               type="text"

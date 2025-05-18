@@ -121,7 +121,7 @@ const PokemonList = () => {
                   <div className="progress-bar-container">
                     <div className="progress-bar-text">EX</div>
                     <div
-                      className="progress-bar"
+                      className="progress-bar-xp"
                       style={{ width: `${pokemon.experience}%` }}
                     ></div>
                   </div>
@@ -133,7 +133,7 @@ const PokemonList = () => {
                       </svg>
                     </div>
                     <div
-                      className="progress-bar"
+                      className="progress-bar-happiness"
                       style={{ width: `${pokemon.happiness}%` }}
                     ></div>
                   </div>

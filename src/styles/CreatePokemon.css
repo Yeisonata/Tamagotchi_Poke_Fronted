@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  background-image: url('../assets/bosque.jpg'); 
+  background-image: url('../assets/city.webp'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -154,7 +154,7 @@
 .create-button {
   width: 90%; 
   padding: 10px;
-  background: linear-gradient(135deg, #395e15, #66AA22);
+  background: linear-gradient(135deg, #66AA22, #558a1b);
   color: #fff;
   border: none;
   border-radius: 5px;

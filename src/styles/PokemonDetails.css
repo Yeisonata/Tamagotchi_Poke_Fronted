@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  background-image: url('../assets/bosque.jpg'); 
+  background-image: url('../assets/city.webp'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -465,4 +465,97 @@
   margin-top: 5px; 
   text-align: left; 
 }
+/* logo */
+/* @media only screen and (max-width: 768px) {
+  .pokemon-details-container {
+    flex-direction: column;
+    padding: 10px;
+    background-position: top center;
+  }
 
+  .poke-details-box {
+    width: 90%;
+    padding: 10px;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 0 auto;
+    position: static;
+  }
+
+  .pokemon-image-container {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+
+  .ph-bar-container,
+  .happ-bar-container {
+    max-width: 100%;
+  }
+
+  .navigation-header {
+    top: 5px;
+    right: 10px;
+  }
+
+  .rectangle {
+    width: 90%;
+    height: auto;
+    top: auto;
+    right: auto;
+    left: auto;
+    transform: none;
+    position: static;
+    margin-top: 20px;
+  }
+
+  .evolution-modal {
+    width: 95%;
+    max-width: none;
+    min-height: auto;
+    padding: 15px;
+  }
+
+  .logo-image {
+    width: 150px;
+    margin: 10px auto;
+  }
+
+  .pokemon-types-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .type-image {
+    width: 28px;
+  }
+
+  .pokemon-species-image.training-image,
+  .pokemon-species-image.default-image,
+  .pokemon-species-image.sleeping-image {
+    width: 100px;
+  }
+
+  .pokemon-species-image.exploration-image {
+    width: 20px;
+  }
+
+  .pokemon-details-content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .pokemon-alias-container {
+    justify-content: center;
+  }
+
+  .interaction-item {
+    justify-content: center;
+  }
+
+  .interaction-icon {
+    margin: 0;
+  }
+}
+ */

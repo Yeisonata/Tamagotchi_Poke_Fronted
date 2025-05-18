@@ -3,8 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/PokemonDetails.css";
 // import pokeIcon from '../assets/poke.png';
+import logo from "../assets/logo.png";
 import poke from "../assets/poke.png";
-// import logo from '../assets/logo.png';
+
 import PropTypes from "prop-types";
 import heart from "../assets/emojis/heart.png";
 import sleep from "../assets/emojis/sleep.gif";
@@ -12,24 +13,49 @@ import sleep from "../assets/emojis/sleep.gif";
 import yummy from "../assets/emojis/yummy.png";
 
 // --- speciesImages ---
-import bulbasaur from "../assets/pokemon/bulbasaur.gif";
-import ivysaur from "../assets/pokemon/ivysaur.gif";
-import venusaur from "../assets/pokemon/venusaur.gif";
-import charmander from "../assets/pokemon/charmander.gif";
-import charmeleon from "../assets/pokemon/charmeleon.gif";
-import charizard from "../assets/pokemon/charizard.gif";
-import squirtle from "../assets/pokemon/squirtle.gif";
-import wartortle from "../assets/pokemon/wartortle.gif";
-import blastoise from "../assets/pokemon/blastoise.gif";
-import eevee from "../assets/pokemon/eevee.gif";
-import vaporeon from "../assets/pokemon/vaporeon.gif";
-import jolteon from "../assets/pokemon/jolteon.gif";
-import flareon from "../assets/pokemon/flareon.gif";
-import espeon from "../assets/pokemon/espeon.gif";
-import umbreon from "../assets/pokemon/umbreon.gif";
-import leafeon from "../assets/pokemon/leafeon.gif";
-import glaceon from "../assets/pokemon/glaceon.gif";
-import sylveon from "../assets/pokemon/sylveon.gif";
+// Importaciones (van primero)
+// --- Pokémon GIFs ---
+import Blastoise from "../assets/pokemon/blastoise.gif";
+import Bulbasaur from "../assets/pokemon/bulbasaur.gif";
+import Charizard from "../assets/pokemon/charizard.gif";
+import Charmeleon from "../assets/pokemon/charmeleon.gif";
+import Charmander from "../assets/pokemon/charmander.gif";
+import Eevee from "../assets/pokemon/eevee.gif";
+import Espeon from "../assets/pokemon/espeon.gif";
+import Flareon from "../assets/pokemon/flareon.gif";
+import Glaceon from "../assets/pokemon/glaceon.gif";
+import Ivysaur from "../assets/pokemon/ivysaur.gif";
+import Jolteon from "../assets/pokemon/jolteon.gif";
+import Leafeon from "../assets/pokemon/leafeon.gif";
+import Squirtle from "../assets/pokemon/squirtle.gif";
+import Sylveon from "../assets/pokemon/sylveon.gif";
+import Umbreon from "../assets/pokemon/umbreon.gif";
+import Vaporeon from "../assets/pokemon/vaporeon.gif";
+import Venusaur from "../assets/pokemon/venusaur.gif";
+import Wartortle from "../assets/pokemon/wartortle.gif";
+
+// --- Objeto con las imágenes ---
+export const speciesImages = {
+  Blastoise,
+  Bulbasaur,
+  Charizard,
+  Charmeleon,
+  Charmander,
+  Eevee,
+  Espeon,
+  Flareon,
+  Glaceon,
+  Ivysaur,
+  Jolteon,
+  Leafeon,
+  Squirtle,
+  Sylveon,
+  Umbreon,
+  Vaporeon,
+  Venusaur,
+  Wartortle,
+};
+
 // --- typeImages ---
 import normalType from "../assets/types/normal.gif";
 import aguaType from "../assets/types/agua.gif";
@@ -42,27 +68,6 @@ import hieloType from "../assets/types/hielo.gif";
 import hadaType from "../assets/types/hada.gif";
 import voladorType from "../assets/types/volador.gif";
 import venenoType from "../assets/types/veneno.gif";
-
-export const speciesImages = {
-  Bulbasaur: bulbasaur,
-  Ivysaur: ivysaur,
-  Venusaur: venusaur,
-  Charmander: charmander,
-  Charmeleon: charmeleon,
-  Charizard: charizard,
-  Squirtle: squirtle,
-  Wartortle: wartortle,
-  Blastoise: blastoise,
-  Eevee: eevee,
-  Vaporeon: vaporeon,
-  Jolteon: jolteon,
-  Flareon: flareon,
-  Espeon: espeon,
-  Umbreon: umbreon,
-  Leafeon: leafeon,
-  Glaceon: glaceon,
-  Sylveon: sylveon,
-};
 
 export const typeImages = {
   Normal: normalType,
@@ -227,13 +232,13 @@ export const sleepingImages = {
 };
 
 const interactionMap = {
-  Alimentar: { action: "FEED", endpoint: "/pokenest/update" },
-  Dormir: { action: "SLEEP", endpoint: "/pokenest/update" },
-  Jugar: { action: "PLAY", endpoint: "/pokenest/update" },
-  Entrenar: { action: "TRAIN", endpoint: "/pokenest/update" },
-  Explorar: { action: "EXPLORE", endpoint: "/pokenest/update" },
-  Curar: { action: "HEAL", endpoint: "/pokenest/update" },
-  "Eliminar Pokémon": { action: null, endpoint: "/pokenest/delete" },
+  Alimentar: { action: "feed", endpoint: "/pet/feed" },
+  Dormir: { action: "sleep", endpoint: "/pet/sleep" },
+  Jugar: { action: "play", endpoint: "/pet/play" },
+  Entrenar: { action: "train", endpoint: "/pet/train" },
+  Explorar: { action: "explore", endpoint: "/pet/explore" },
+  Curar: { action: "heal", endpoint: "/pet/heal" },
+  "Eliminar Pokémon": { action: null, endpoint: "/pet/delete" },
 };
 
 const GetOne = () => {
@@ -249,6 +254,7 @@ const GetOne = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [evolutionTarget, setEvolutionTarget] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentInteraction, setCurrentInteraction] = useState(null);
 
   const [temporaryBackground, setTemporaryBackground] = useState(null);
   const [temporaryImage, setTemporaryImage] = useState(null);
@@ -261,10 +267,15 @@ const GetOne = () => {
       }
 
       try {
-        const response = await axios.get(`/pokenest/getOne/${id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
-        setPokemonDetails(response.data);
+        const response = await axios.get(
+          `http://localhost:5000/pet/user/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setPokemonDetails(response.data.pet); // Asumiendo que respondes { pet: {...} }
       } catch (err) {
         console.error("Error fetching Pokémon details:", err);
         setError("Error al cargar los detalles del Pokémon.");
@@ -275,14 +286,31 @@ const GetOne = () => {
   }, [id]);
 
   useEffect(() => {
-    if (pokemonDetails) {
-      const pokemonImage = speciesImages[pokemonDetails.species];
+    // Evita sobreescribir si hay una interacción activa
+    if (
+      pokemonDetails &&
+      pokemonDetails.specie_name &&
+      pokemonDetails.location &&
+      !isSleeping &&
+      !isEating &&
+      !isPlaying &&
+      !isHealing &&
+      !currentInteraction // ← clave
+    ) {
+      const pokemonImage = speciesImages[pokemonDetails.specie_name];
       const pokemonBackground = locationBackgrounds[pokemonDetails.location];
 
       setTemporaryImage(pokemonImage);
       setTemporaryBackground(pokemonBackground);
     }
-  }, [pokemonDetails]);
+  }, [
+    pokemonDetails,
+    isSleeping,
+    isEating,
+    isPlaying,
+    isHealing,
+    currentInteraction,
+  ]);
 
   if (error) {
     return <div>{error}</div>;
@@ -308,9 +336,8 @@ const GetOne = () => {
     );
   }
 
-  const pokemonImage = speciesImages[pokemonDetails.species];
+  const pokemonImage = speciesImages[pokemonDetails.specie_name];
   const pokemonBackground = locationBackgrounds[pokemonDetails.location];
-
   const renderEvolutionModal = () => (
     <div className="evolution-modal">
       <h3>Selecciona la Evolución</h3>
@@ -347,25 +374,31 @@ const GetOne = () => {
     if (!confirmEvolution) return;
 
     try {
-      const url = `/pokenest/update/eev?targetSpecies=${evolutionTarget}`;
-
+      const url = `http://localhost:5000/pet/evolve/${pokemonDetails.id}`;
       const data = { id: pokemonDetails.id };
 
       const response = await axios.post(url, data);
-
       const updatedPokemon = response.data;
 
+      // 🔸 Función para capitalizar el nombre de la especie
+      const formatSpecieName = (name) =>
+        name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+
+      const imageKey = formatSpecieName(updatedPokemon.specie_name);
+
+      // 🔹 Mostrar fondo de evolución y animación
       setTemporaryBackground(locationBackgrounds.EVOLUTION);
-      setTemporaryImage(speciesImages[updatedPokemon.species]);
+      setTemporaryImage(speciesImages[imageKey]);
 
       const pokemonImage = document.querySelector(".pokemon-species-image");
       if (pokemonImage) {
         pokemonImage.classList.add("pokemon-fade-in");
       }
 
+      // 🔹 Espera y muestra nuevo fondo e imagen
       setTimeout(() => {
         setTemporaryBackground(locationBackgrounds[updatedPokemon.location]);
-        setTemporaryImage(speciesImages[updatedPokemon.species]);
+        setTemporaryImage(speciesImages[imageKey]);
         setPokemonDetails(updatedPokemon);
 
         if (pokemonImage) {
@@ -375,110 +408,128 @@ const GetOne = () => {
         setIsEvolving(false);
       }, 2000);
     } catch (error) {
-      console.error("Error al evolucionar el Pokémon:", error);
-      alert("No se pudo evolucionar al Pokémon. Inténtalo nuevamente.");
+      console.error("Error durante la evolución:", error);
     }
   };
-
   const handleInteraction = async (interaction) => {
-    if (!pokemonDetails) {
+    if (!pokemonDetails || !pokemonDetails.id) {
       alert("Los detalles del Pokémon aún no están cargados.");
       return;
     }
 
+    const petId = pokemonDetails.id;
+    const token = localStorage.getItem("token");
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    if (interaction === "Eliminar Pokémon") {
+      const confirmDelete = window.confirm(
+        "¿Estás seguro de que deseas eliminar este Pokémon?"
+      );
+      if (!confirmDelete) return;
+
+      try {
+        const url = `${API_URL}/pet/delete/${petId}`;
+        await axios.delete(url, config);
+        navigate("/user-dashboard");
+        return;
+      } catch (error) {
+        console.error(
+          "Error al eliminar:",
+          error.response?.data || error.message
+        );
+        alert("No se pudo eliminar el Pokémon.");
+        return;
+      }
+    }
+
     try {
       const { action, endpoint } = interactionMap[interaction];
-      const url = action ? `${endpoint}?petInteraction=${action}` : endpoint;
+      const url = action
+        ? `${API_URL}${endpoint}/${petId}`
+        : `${API_URL}${endpoint}`;
       const data = { id: pokemonDetails.id };
-
-      if (interaction === "Eliminar Pokémon") {
-        const confirmDelete = window.confirm(
-          "¿Estás seguro de que deseas eliminar este Pokémon?"
-        );
-        if (!confirmDelete) return;
-
-        try {
-          await axios.delete("/pokenest/delete", {
-            data: { id: pokemonDetails.id },
-          });
-          navigate("/user-dashboard");
-          return;
-        } catch (error) {
-          console.error("Error al eliminar el Pokémon:", error);
-          alert("No se pudo eliminar el Pokémon. Inténtalo nuevamente.");
-        }
-      }
-
-      const response = await axios.post(url, data);
+      const response = await axios.post(url, data, config);
       const updatedPokemon = response.data;
 
+      // 🔄 Aquí van las animaciones usando updatedPokemon directamente
+      setCurrentInteraction(interaction);
       switch (interaction) {
         case "Alimentar":
           setIsEating(true);
+          setTimeout(
+            () => setIsEating(false),
 
-          setTimeout(() => {
-            setIsEating(false);
-          }, 10000);
+            10000
+          );
           break;
 
         case "Dormir":
           setIsSleeping(true);
           setTemporaryImage(
-            sleepingImages[pokemonDetails.species] ||
-              speciesImages[pokemonDetails.species]
+            sleepingImages[pokemonDetails.specie_name] ||
+              speciesImages[pokemonDetails.specie_name]
           );
           setTimeout(() => {
             setIsSleeping(false);
-            setTemporaryImage(speciesImages[pokemonDetails.species]);
+            setTemporaryImage(speciesImages[pokemonDetails.specie_name]);
+            setCurrentInteraction(null);
           }, 10000);
           break;
 
         case "Jugar":
           setIsPlaying(true);
+          setTimeout(
+            () => setIsPlaying(false),
 
-          setTimeout(() => {
-            setIsPlaying(false);
-          }, 10000);
+            10000
+          );
           break;
 
         case "Entrenar":
           setTemporaryBackground(locationBackgrounds.BATTLEGROUND);
           setTemporaryImage(
-            trainingImages[pokemonDetails.species] ||
-              speciesImages[pokemonDetails.species]
+            trainingImages[pokemonDetails.specie_name] ||
+              speciesImages[pokemonDetails.specie_name]
           );
           setTimeout(() => {
             setTemporaryBackground(
               locationBackgrounds[pokemonDetails.location]
             );
-            setTemporaryImage(speciesImages[pokemonDetails.species]);
+            setTemporaryImage(speciesImages[pokemonDetails.specie_name]);
+            setCurrentInteraction(null);
           }, 6000);
           break;
 
         case "Explorar":
           setTemporaryBackground(locationBackgrounds.EXPLORE);
           setTemporaryImage(
-            explorationImages[pokemonDetails.species] ||
-              speciesImages[pokemonDetails.species]
+            explorationImages[pokemonDetails.specie_name] ||
+              speciesImages[pokemonDetails.specie_name]
           );
           setTimeout(() => {
             setTemporaryBackground(
-              locationBackgrounds[pokemonDetails.location]
+              locationBackgrounds[updatedPokemon.location]
             );
-            setTemporaryImage(speciesImages[pokemonDetails.species]);
+            setTemporaryImage(speciesImages[pokemonDetails.specie_name]);
+            setCurrentInteraction(null);
           }, 6000);
           break;
 
         case "Curar":
           setTemporaryBackground(locationBackgrounds.POKECENTER);
-          setTemporaryImage(poke);
+          setTemporaryImage("pokecenter_image.png"); // o `heart`, según como lo tengas
           setIsHealing(true);
           setTimeout(() => {
             setIsHealing(false);
             setTemporaryBackground(
               locationBackgrounds[pokemonDetails.location]
             );
-            setTemporaryImage(speciesImages[pokemonDetails.species]);
+            setTemporaryImage(speciesImages[pokemonDetails.specie_name]);
+            setCurrentInteraction(null);
           }, 6000);
           break;
 
@@ -486,6 +537,7 @@ const GetOne = () => {
           alert("Interacción no soportada.");
       }
 
+      // ✅ Aquí se actualiza el estado general
       setPokemonDetails(updatedPokemon);
     } catch (error) {
       console.error(`Error en la interacción ${interaction}:`, error);
@@ -516,7 +568,7 @@ const GetOne = () => {
         </div>
         <div className="rectangle">
           <ul className="interactions-list">
-            {pokemonDetails.species === "Eevee" && (
+            {pokemonDetails.specie_name === "Eevee" && (
               <li
                 className="interaction-item"
                 onClick={() => setIsEvolving(true)}
@@ -560,26 +612,56 @@ const GetOne = () => {
             ))}
           </ul>
         </div>
-        <img src={{}} alt="Logo" className="logo-image" />
+        <img src={logo} alt="Logos" className="logo-image" />
         <div className="pokemon-details-content">
           <div className="pokemon-alias-container">
             <img src={poke} alt="Poke Icon" className="poke-icon" />
             <span className="pokemon-alias">{pokemonDetails.alias}</span>
+            {/* <img src={explorationImages[pokemonDetails.specie_name]} alt="" /> */}
+
             <span className="separator">-</span>
             <p className="pokemon-level">
               <span>Nv. </span> {pokemonDetails.lvl}
             </p>
           </div>
           <div className="pokemon-types-container">
-            {pokemonDetails.types &&
-              pokemonDetails.types.map((type, index) => (
-                <img
-                  key={index}
-                  src={typeImages[type.trim()]}
-                  alt={type}
-                  className="type-image"
-                />
-              ))}
+            {pokemonDetails.types?.length > 0 && (
+              <div className="pokemon-types-container">
+                {pokemonDetails.types.map((type, index) => {
+                  const trimmedType = type.trim().toLowerCase();
+
+                  // Mapeo de inglés a español (según tus claves en typeImages)
+                  const typeMap = {
+                    normal: "Normal",
+                    water: "Agua",
+                    electric: "Eléctrico",
+                    fire: "Fuego",
+                    psychic: "Psíquico",
+                    dark: "Siniestro",
+                    grass: "Planta",
+                    ice: "Hielo",
+                    fairy: "Hada",
+                    flying: "Volador",
+                    poison: "Veneno",
+                  };
+
+                  const translatedType = typeMap[trimmedType];
+                  const imageSrc = typeImages[translatedType];
+
+                  return (
+                    imageSrc && (
+                      <img
+                        key={index}
+                        src={imageSrc}
+                        alt={translatedType}
+                        className="type-image"
+                        title={translatedType}
+                      />
+                    )
+                  );
+                })}
+              </div>
+            )}
           </div>
           {temporaryImage && (
             <div
@@ -592,14 +674,15 @@ const GetOne = () => {
             >
               <img
                 src={temporaryImage}
-                alt={pokemonDetails.species}
+                alt={pokemonDetails.specie_name}
                 className={`pokemon-species-image ${
-                  temporaryImage === sleepingImages[pokemonDetails.species]
+                  temporaryImage === sleepingImages[pokemonDetails.specie_name]
                     ? "sleeping-image"
-                    : temporaryImage === trainingImages[pokemonDetails.species]
+                    : temporaryImage ===
+                      trainingImages[pokemonDetails.specie_name]
                     ? "training-image"
                     : temporaryImage ===
-                      explorationImages[pokemonDetails.species]
+                      explorationImages[pokemonDetails.specie_species_name]
                     ? "exploration-image"
                     : temporaryImage === poke
                     ? "heal-image"
@@ -616,7 +699,8 @@ const GetOne = () => {
                   <img src={heart} alt="Jugando" className="playing-gif" />
                 </div>
               )}
-              {temporaryImage === sleepingImages[pokemonDetails.species] && (
+              {temporaryImage ===
+                sleepingImages[pokemonDetails.specie_name] && (
                 <div className="sleeping-gif-container">
                   <img src={sleep} alt="Durmiendo" className="sleeping-gif" />
                 </div>
@@ -671,7 +755,7 @@ const GetOne = () => {
 GetOne.propTypes = {
   pokemon: PropTypes.shape({
     alias: PropTypes.string.isRequired,
-    species: PropTypes.string.isRequired,
+    specie_name: PropTypes.string.isRequired,
     lvl: PropTypes.number.isRequired,
     experience: PropTypes.number.isRequired,
     happiness: PropTypes.number.isRequired,
