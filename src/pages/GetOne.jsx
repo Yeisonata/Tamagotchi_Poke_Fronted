@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/PokemonDetails.css";
 // import pokeIcon from '../assets/poke.png';
-import logo from "../assets/logo.png";
+import logo from "../assets/poke_gotchi_final.png"; 
 import poke from "../assets/poke.png";
 
 import PropTypes from "prop-types";
@@ -544,212 +544,167 @@ const GetOne = () => {
       alert(`No se pudo realizar la interacción: ${interaction}`);
     }
   };
+  
 
   return (
-    <div className="pokemon-details-container">
-      <div className="poke-details-box">
-        <div className="navigation-header">
-          <a href="/pokenest/getUserPoke" className="navigation-link">
-            Mis Pokémon
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-arrow-right"
-              viewBox="0 0 16 16"
+  <div className="pokemon-details-container flex justify-center px-4 sm:px-6 lg:px-8">
+    <div className="poke-details-box w-full max-w-5xl flex flex-col gap-4">
+      <div className="navigation-header flex justify-end">
+        <a href="/pokenest/getUserPoke" className="navigation-link flex items-center gap-2 text-sm sm:text-base">
+          Mis Pokémon
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-arrow-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M1 8a.5.5 0 0 1 .5-.5h10.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <div className="rectangle w-full">
+        <ul className="interactions-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+          {pokemonDetails.specie_name === "Eevee" && (
+            <li
+              className="interaction-item cursor-pointer"
+              onClick={() => setIsEvolving(true)}
             >
-              <path
-                fillRule="evenodd"
-                d="M1 8a.5.5 0 0 1 .5-.5h10.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-              />
-            </svg>
-          </a>
+              <span className="interaction-icon">
+               
+              </span>
+              Evolucionar
+            </li>
+          )}
+          {isEvolving && renderEvolutionModal()}
+          {Object.keys(interactionMap).map((option, index) => (
+            <li
+              key={index}
+              className="interaction-item cursor-pointer"
+              onClick={() => handleInteraction(option)}
+            >
+              <span className="interaction-icon">
+                
+              </span>
+              {option}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <img src={logo} alt="Logos" className="logo-image mx-auto w-20 sm:w-28 md:w-32" />
+
+      <div className="pokemon-details-content flex flex-col gap-4">
+        <div className="pokemon-alias-container flex items-center justify-center flex-wrap gap-2 text-center">
+          <img src={poke} alt="Poke Icon" className="poke-icon w-6 sm:w-8" />
+          <span className="pokemon-alias text-lg sm:text-xl font-semibold">{pokemonDetails.alias}</span>
+          <span className="separator">-</span>
+          <p className="pokemon-level text-base sm:text-lg">
+            <span>Nv. </span> {pokemonDetails.lvl}
+          </p>
         </div>
-        <div className="rectangle">
-          <ul className="interactions-list">
-            {pokemonDetails.specie_name === "Eevee" && (
-              <li
-                className="interaction-item"
-                onClick={() => setIsEvolving(true)}
-              >
-                <span className="interaction-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-play-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
-                  </svg>
-                </span>
-                Evolucionar
-              </li>
+
+        <div className="pokemon-types-container flex justify-center flex-wrap gap-2">
+          {pokemonDetails.types?.length > 0 && (
+            <div className="pokemon-types-container flex gap-2 flex-wrap justify-center">
+              {pokemonDetails.types.map((type, index) => {
+                const trimmedType = type.trim().toLowerCase();
+                const typeMap = {
+                  normal: "Normal", water: "Agua", electric: "Eléctrico", fire: "Fuego",
+                  psychic: "Psíquico", dark: "Siniestro", grass: "Planta", ice: "Hielo",
+                  fairy: "Hada", flying: "Volador", poison: "Veneno"
+                };
+                const translatedType = typeMap[trimmedType];
+                const imageSrc = typeImages[translatedType];
+                return (
+                  imageSrc && (
+                    <img
+                      key={index}
+                      src={imageSrc}
+                      alt={translatedType}
+                      className="type-image w-6 sm:w-8"
+                      title={translatedType}
+                    />
+                  )
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {temporaryImage && (
+          <div
+            className="pokemon-image-container mx-auto w-full max-w-md"
+            style={{
+              backgroundImage: `url(${temporaryBackground})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <img
+              src={temporaryImage}
+              alt={pokemonDetails.specie_name}
+              className={`pokemon-species-image w-full ${
+                temporaryImage === sleepingImages[pokemonDetails.specie_name]
+                  ? "sleeping-image"
+                  : temporaryImage === trainingImages[pokemonDetails.specie_name]
+                  ? "training-image"
+                  : temporaryImage === explorationImages[pokemonDetails.specie_species_name]
+                  ? "exploration-image"
+                  : temporaryImage === poke
+                  ? "heal-image"
+                  : "default-image"
+              }`}
+            />
+            {isEating && (
+              <div className="eating-gif-container">
+                <img src={yummy} alt="Comiendo" className="eating-gif w-10 sm:w-12" />
+              </div>
             )}
-            {isEvolving && renderEvolutionModal()}
-            {Object.keys(interactionMap).map((option, index) => (
-              <li
-                key={index}
-                className="interaction-item"
-                onClick={() => handleInteraction(option)}
-              >
-                <span className="interaction-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-play-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
-                  </svg>
-                </span>
-                {option}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <img src={logo} alt="Logos" className="logo-image" />
-        <div className="pokemon-details-content">
-          <div className="pokemon-alias-container">
-            <img src={poke} alt="Poke Icon" className="poke-icon" />
-            <span className="pokemon-alias">{pokemonDetails.alias}</span>
-            {/* <img src={explorationImages[pokemonDetails.specie_name]} alt="" /> */}
-
-            <span className="separator">-</span>
-            <p className="pokemon-level">
-              <span>Nv. </span> {pokemonDetails.lvl}
-            </p>
-          </div>
-          <div className="pokemon-types-container">
-            {pokemonDetails.types?.length > 0 && (
-              <div className="pokemon-types-container">
-                {pokemonDetails.types.map((type, index) => {
-                  const trimmedType = type.trim().toLowerCase();
-
-                  // Mapeo de inglés a español (según tus claves en typeImages)
-                  const typeMap = {
-                    normal: "Normal",
-                    water: "Agua",
-                    electric: "Eléctrico",
-                    fire: "Fuego",
-                    psychic: "Psíquico",
-                    dark: "Siniestro",
-                    grass: "Planta",
-                    ice: "Hielo",
-                    fairy: "Hada",
-                    flying: "Volador",
-                    poison: "Veneno",
-                  };
-
-                  const translatedType = typeMap[trimmedType];
-                  const imageSrc = typeImages[translatedType];
-
-                  return (
-                    imageSrc && (
-                      <img
-                        key={index}
-                        src={imageSrc}
-                        alt={translatedType}
-                        className="type-image"
-                        title={translatedType}
-                      />
-                    )
-                  );
-                })}
+            {isPlaying && (
+              <div className="playing-gif-container">
+                <img src={heart} alt="Jugando" className="playing-gif w-10 sm:w-12" />
+              </div>
+            )}
+            {temporaryImage === sleepingImages[pokemonDetails.specie_name] && (
+              <div className="sleeping-gif-container">
+                <img src={sleep} alt="Durmiendo" className="sleeping-gif w-10 sm:w-12" />
+              </div>
+            )}
+            {isHealing && (
+              <div className="healing-gif-container">
+                <img src={heart} alt="Curando" className="healing-gif w-10 sm:w-12" />
               </div>
             )}
           </div>
-          {temporaryImage && (
-            <div
-              className="pokemon-image-container"
-              style={{
-                backgroundImage: `url(${temporaryBackground})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <img
-                src={temporaryImage}
-                alt={pokemonDetails.specie_name}
-                className={`pokemon-species-image ${
-                  temporaryImage === sleepingImages[pokemonDetails.specie_name]
-                    ? "sleeping-image"
-                    : temporaryImage ===
-                      trainingImages[pokemonDetails.specie_name]
-                    ? "training-image"
-                    : temporaryImage ===
-                      explorationImages[pokemonDetails.specie_species_name]
-                    ? "exploration-image"
-                    : temporaryImage === poke
-                    ? "heal-image"
-                    : "default-image"
-                }`}
-              />
-              {isEating && (
-                <div className="eating-gif-container">
-                  <img src={yummy} alt="Comiendo" className="eating-gif" />
-                </div>
-              )}
-              {isPlaying && (
-                <div className="playing-gif-container">
-                  <img src={heart} alt="Jugando" className="playing-gif" />
-                </div>
-              )}
-              {temporaryImage ===
-                sleepingImages[pokemonDetails.specie_name] && (
-                <div className="sleeping-gif-container">
-                  <img src={sleep} alt="Durmiendo" className="sleeping-gif" />
-                </div>
-              )}
-              {isHealing && (
-                <div className="healing-gif-container">
-                  <img src={heart} alt="Curando" className="healing-gif" />
-                </div>
-              )}
-            </div>
-          )}
+        )}
 
-          <div className="ph-bar-container">
-            <div className="ph-bar-text">PH</div>
-            <div
-              className="ph-bar"
-              style={{ width: `${pokemonDetails.ph}%` }}
-            ></div>
+        <div className="ph-bar-container w-full max-w-md mx-auto">
+          <div className="ph-bar-text text-sm sm:text-base">PH</div>
+          <div className="ph-bar" style={{ width: `${pokemonDetails.ph}%` }}></div>
+        </div>
+
+        <div className="ph-bar-container w-full max-w-md mx-auto">
+          <div className="exp-bar-text text-sm sm:text-base">EX</div>
+          <div className="exp-bar" style={{ width: `${pokemonDetails.experience}%` }}></div>
+        </div>
+
+        <div className="happ-bar-container ">
+          <div className="happ-bar-text ">
+           
           </div>
-          <div className="ph-bar-container">
-            <div className="exp-bar-text">EX</div>
-            <div
-              className="exp-bar"
-              style={{ width: `${pokemonDetails.experience}%` }}
-            ></div>
-          </div>
-          <div className="happ-bar-container">
-            <div className="happ-bar-text">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-emoji-smile"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5" />
-              </svg>
-            </div>
-            <div
-              className="happ-bar"
-              style={{ width: `${pokemonDetails.happiness}%` }}
-            ></div>
-          </div>
+          <div className="happ-bar" style={{ width: `${pokemonDetails.happiness}%` }}></div>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 GetOne.propTypes = {

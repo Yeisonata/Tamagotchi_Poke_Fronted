@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../styles/Register.css';
 import '../styles/App.css';
-// import logo from '../assets/logo.png';
+import logo from '../assets/poke_gotchi_final.png';
 
 import api from '../axiosConfig';
 import cloud1 from '../assets/Cloud-1.png';
@@ -70,7 +70,7 @@ function Register() {
 
       <div className="login-container">
         <form onSubmit={handleRegister}>
-          {/* <img src={logo} alt="Logo" className="logo" /> */}
+          <img src={logo} alt="Logo" className="logo" />
           <div>
             <label htmlFor="username">Usuario:</label>
             <input

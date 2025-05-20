@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import pokeIcon from '../assets/poke.png';
 import heart from "../assets/emojis/heart.png";
 import sleep from "../assets/emojis/sleep.gif";
-import Logo from "../assets/pokelogo.png";
+import logo from "../assets/poke_gotchi_final.png";
 import yummy from "../assets/emojis/yummy.png";
 
 import axios from 'axios';
@@ -529,7 +529,7 @@ const PokemonDetails = () => {
             </div>
                 <div className="pokemon-details-content">
                 <div className="pokemon-alias-container">
-            <img src={{Logo}} alt="Logo" className="logo-image" />
+            <img src={logo} alt="Logo" className="logo-image" />
                     <img src={pokeIcon} alt="Poke Icon" className="poke-icon" />
                     <span className="pokemon-alias">{currentPokemon.alias}</span>
                     <span className="separator">-</span>

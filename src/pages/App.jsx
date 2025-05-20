@@ -7,7 +7,7 @@ import cloud2 from "../assets/Cloud-2.png";
 import cloud3 from "../assets/Cloud-3.png";
 import themeSong from "../assets/sonid/opening.mp3";
 
-import logo from "../assets/pokelogo.png"; 
+import logo from "../assets/poke_gotchi_final.png"; 
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/",
@@ -90,6 +90,7 @@ function App() {
   
 
   return (
+   
     <div className="App">
       {/* ☁️ Fondo de nubes */}
       <div className="background-clouds">
@@ -101,6 +102,7 @@ function App() {
 
       {/* 📝 Contenedor principal */}
       <div className="login-container">
+
         {/* 🔊 Botón de música dentro del contenedor */}
         <button onClick={toggleMusic} className="music-toggle">
           {isPlaying ? "🔊 " : "🔇 "}

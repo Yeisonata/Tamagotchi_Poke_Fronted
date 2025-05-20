@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import logo from "../assets/poke_gotchi_final.png"; 
 import api from '../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import '../styles/PokemonList.css';
@@ -87,6 +87,7 @@ const PokemonList = () => {
               </svg>
             </a>
           </div>
+             <img src={logo} alt="Logos" className="logo-image" />
           <h1 className="pokemon-list-title">Mis Pokémon</h1>
           <div className="separator-line"></div>
         </div>
